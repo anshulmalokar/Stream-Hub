@@ -1,5 +1,7 @@
 import React from "react";
 import NavBar from "./_components/navbar";
+import SideBar from "./_components/sidebar";
+import Container from "./_components/sidebar/Container";
 
 type Props = {};
 
@@ -10,10 +12,11 @@ export default function layout({
 }>) {
   return (
     <>
-      <div className="flex flex-col h-full">
-        <NavBar />
+      <NavBar />
+      <SideBar/>
+      <Container>
         {children}
-      </div>
+      </Container>
     </>
   );
 }
