@@ -1,24 +1,34 @@
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import { currentUser } from '@clerk/nextjs/server'
-import { SignOutButton } from '@clerk/nextjs'
-import { SignInButton } from '@clerk/nextjs'
-type Props = {}
+import React, { use } from "react";
+import { currentUser } from "@clerk/nextjs/server";
+import { UserButton } from "@clerk/nextjs";
+import Link from "next/link";
+import { Clapperboard } from "lucide-react";
+import { SignInButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+type Props = {};
 
-const Actions = (props: Props) => {
-  const user = currentUser();
+const Actions = async (props: Props) => {
+  const user = await currentUser();
+  if (!user) {
+    return (
+      <>
+        <Button variant={"primary"} size={"sm"}>
+          <SignInButton />
+        </Button>
+      </>
+    );
+  }
   return (
-    <>
-        {
-            !user && <>
-                <SignOutButton/>
-            </>
-        }
-        <>
-            <SignInButton/>
-        </>
-    </>
-  )
-}
+    <div className="flex justify-end gap-5">
+      <Link href={user === null ? "/" : `/u/${user.username}`}>
+        <div className="flex gap-3">
+          <Clapperboard />
+          <span className="hidden lg:block">Dashboard</span>
+        </div>
+      </Link>
+      <UserButton afterSwitchSessionUrl="/"/>
+    </div>
+  );
+};
 
 export default Actions;
